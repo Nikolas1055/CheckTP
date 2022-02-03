@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="java">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админ</title>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:include="/fragments/_navbar"/>
+<th:block th:include="/fragments/_chiefMenu"/>
+<div th:if="${types.isEmpty()}">
+    <h4 class="d-flex justify-content-center">Список типов объектов пуст</h4>
+    <div class="d-flex justify-content-center">
+        <a th:href="@{/chief/newType}">
+            <button style="width: 150px" class="btn btn-outline-success  btn-block">Создать тип
+            </button>
+        </a>
+    </div>
+</div>
+<div th:if="${!types.isEmpty()}">
+    <div class="container" style="width: 30rem;">
+        <h4 class="d-flex justify-content-center">Список типов объектов</h4>
+        <div class="card">
+            <div class="card-body">
+                <table class="table table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Название типа</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="type : ${types}">
+                        <td th:text="${type.id}" class="border-end"></td>
+                        <td th:text="${type.name}"></td>
+                        <td>
+                            <a th:href="@{/chief/editType/(id=${type.id})}"
+                               class="btn btn-sm btn-outline-primary" style="width: 100px">Изменить</a>
+                            <a th:href="@{/chief/deleteType/(id=${type.id})}"
+                               class="btn btn-sm btn-outline-danger" style="width: 100px">Удалить</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <hr/>
+                <div class="mt-3 d-flex justify-content-center">
+                    <a th:href="@{/chief/newType}">
+                        <button style="width: 150px" class="btn btn-outline-success  btn-block">Создать тип
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

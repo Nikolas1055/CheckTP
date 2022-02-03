@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="java">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Админ</title>
+    <script src="/webjars/bootstrap/5.1.3/js/bootstrap.bundle.min.js"></script>
+    <link rel="stylesheet" href="/webjars/bootstrap/5.1.3/css/bootstrap.min.css">
+</head>
+<body>
+<th:block th:include="/fragments/_navbar"/>
+<th:block th:include="/fragments/_chiefMenu"/>
+<div th:if="${checklists.isEmpty()}">
+    <h4 class="d-flex justify-content-center">Список чек-листов пуст</h4>
+</div>
+<div th:if="${!checklists.isEmpty()}">
+    <div class="container">
+        <h4 class="d-flex justify-content-center">Список чек-листов</h4>
+
+                <table class="table table-hover table-sm">
+                    <thead>
+                    <tr>
+                        <th>Объект</th>
+                        <th>Дата</th>
+                        <th>Оценка</th>
+                        <th>Мастер</th>
+                        <th>Действия</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="checklist : ${checklists}">
+                        <td th:text="${checklist.object.toString()}"></td>
+                        <td th:text="${checklist.date}"></td>
+                        <td th:text="${checklist.overallGrade}"></td>
+                        <td th:text="${checklist.master.fullName}"></td>
+                        <td>
+                            <a th:href="@{/chief/viewChecklist/(id=${checklist.id})}"
+                               class="btn btn-sm btn-outline-primary" style="width: 100px">Просмотр</a>
+                            <a th:href="@{/chief/exportExcel/(id=${checklist.id})}"
+                               class="btn btn-sm btn-outline-success" style="width: 100px">Excel</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
+                <hr/>
+
+                <ul class="nav nav-pills">
+                    <li class="nav-item" th:each="i : ${#numbers.sequence(0, checklists.totalPages - 1)}">
+                        <a th:href="@{/chief/checklists/(page=${i})}" th:text="${i}" class="nav-link"
+                           th:classappend="${currentPage == i ? 'active' : ''}"></a>
+                    </li>
+                </ul>
+
+    </div>
+</div>
+</body>
+</html>
